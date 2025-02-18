@@ -1,0 +1,21 @@
+name: Deploy to Google Cloud
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta cuando hay cambios en la rama principal
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Authenticate with Google Cloud
+        env:
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        run: |
+          echo "$GCP_CREDENTIALS" > gcp-key.json
+          gcloud auth activate-service-account --key-file=gcp-key.json
